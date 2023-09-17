@@ -109,7 +109,7 @@ const Cart = (props: Props) => {
           <div className=" w-full md:w-1/2">
             <div className="items-center mt-8 text-white mb-4 dark:text-white flex justify-between">
               <div className="text-xl font-bold">Address Detail</div>
-              <div className="text-xl font-bold">Edit</div>
+              {/* <div className="text-xl font-bold">Edit</div> */}
             </div>
             <div className="bg-white rounded-lg shadow-xl p-8">
               <div className="text-md pb-4 border-b border-gray-200">Delivery to <b>{user.username}</b></div>
