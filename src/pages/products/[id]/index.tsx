@@ -4,7 +4,7 @@ import Promo from '@/components/moleculs/Promo'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 import { useAppDispatch } from '@/store'
 import {decrementByAmount, incrementByAmount} from '@/store/features/counterSlice'
 import { useSelector } from 'react-redux'
@@ -13,16 +13,27 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import axios from 'axios'
 import { addToCart } from '@/store/features/cartSlice'
 import { ToastContainer, toast } from 'react-toastify'
-import CustomButton from '@/components/atoms/CustomButton'
 import { FaArrowCircleRight } from 'react-icons/fa'
 
 
-
 const SingleProduct = ({repo}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    console.log({repo});
     const dispatch = useAppDispatch()
     const router = useRouter()
     const count = useSelector((state:RootState)=>state.count)
+    const token = useSelector((state:RootState)=>state.auth.token)
+    const [deliveryType, setDeliveryType] = useState<"Dine In" | "Door Delivery" | "Pick Up">("Dine In")
+    const [isNow, setIsNow] = useState(false)
+    const [size, setSize] = useState<"R"|"L"|"XL">("R")
+    const delives = [
+        "Dine In",
+        "Door Delivery",
+        "Pick Up"
+    ]
+    const sizes = [
+        "R",
+        "L",
+        "XL"
+    ]
     return (
         <div className='bg-white'>
             <Head>
@@ -38,14 +49,17 @@ const SingleProduct = ({repo}: InferGetServerSidePropsType<typeof getServerSideP
                     <div className="bg-white shadow-2xl rounded-lg flex flex-col gap-y-8 px-8 py-4">
                         <div className="text-xl font-bold">Delivery And Time</div>
                         <div className="flex items-center justify-between gap-x-4 w-full">
-                            <div className="bg-gray-100 p-2 text-gray-400 rounded-lg cursor-pointer">Dine In</div>
-                            <div className="bg-gray-100 p-2 text-gray-400 rounded-lg cursor-pointer">Door Delivery</div>
-                            <div className="bg-gray-100 p-2 text-gray-400 rounded-lg cursor-pointer">Pick Up</div>
+                            {delives.map((item, index)=>(
+                                <div onClick={()=>{
+                                    //@ts-ignore
+                                    setDeliveryType(item)
+                                }} key={index} className={item === deliveryType ? 'bg-amber-800 text-white p-2 rounded-lg cursor-pointer'  : `bg-gray-100 p-2 text-gray-400 rounded-lg cursor-pointer`}>{item}</div>
+                            ))}
                         </div>
                         <div className="flex items-center justify-between gap-x-4 w-full">
                             <div className="text-xl font-bold">Now</div>
-                            <div className="bg-gray-100 px-8 py-2 text-gray-400 rounded-lg cursor-pointer">Yes</div>
-                            <div className="bg-gray-100 px-8 py-2 text-gray-400 rounded-lg cursor-pointer">No</div>
+                            <div onClick={()=>{setIsNow(true)}} className={isNow ? "bg-amber-800 text-white px-8 py-2 rounded-lg cursor-pointer" : "bg-gray-100 px-8 py-2 text-gray-400 rounded-lg cursor-pointer"}>Yes</div>
+                            <div onClick={()=>{setIsNow(false)}} className={!isNow ? "bg-amber-800 text-white px-8 py-2 rounded-lg cursor-pointer" : "bg-gray-100 px-8 py-2 text-gray-400 rounded-lg cursor-pointer"}>No</div>
                         </div>
                         <div className="flex items-center justify-between gap-x-4 w-full">
                             <div className="text-xl font-bold">Set Time</div>
@@ -69,15 +83,24 @@ const SingleProduct = ({repo}: InferGetServerSidePropsType<typeof getServerSideP
                         <div className="font-bold text-xl">{`IDR ${repo.priceSale?.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}`}</div>
                     </div>
                     <div onClick={()=>{
-                        dispatch(addToCart({...repo, count: count.value}))
+                        if(!token){
+                            toast.error("Please login first")
+                            return router.push("/login")
+                        }
+                        dispatch(addToCart({...repo, count: count.value, size, total : count.value * repo.priceSale}))
                         toast.success("Success add to cart")
+                        router.push("/cart")
                     }} className="flex items-center justify-center px-6 py-2 mt-8 bg-amber-800 rounded-lg text-xl text-white dark:text-white font-bold w-full cursor-pointer">Add To Cart</div>
-                    <div className="flex items-center justify-center px-6 py-2 mt-8 bg-amber-800 rounded-lg text-xl text-white dark:text-white font-bold w-full cursor-pointer">Ask To Staff</div>
+                    <div onClick={()=>{
+                        if(!token){
+                            toast.error("Please login first")
+                        }
+                    }} className="flex items-center justify-center px-6 py-2 mt-8 bg-amber-800 rounded-lg text-xl text-white dark:text-white font-bold w-full cursor-pointer">Ask To Staff</div>
                     
                 </div>
             </div>
             <div className="relative bg-gray-50">
-            <div className=" md:absolute p-4 w-full flex items-center justify-center gap-x-4 rounded-lg top-0 md:-top-20">
+            <div className=" md:absolute p-4 w-full flex flex-col md:flex-row gap-y-2 items-center justify-center gap-x-4 rounded-lg top-0 md:-top-20">
                 {/* <div className="bg-white p-4 shadow-xl text-amber-800 h-40 w-full md:w-3/4 flex flex-col items-center justify-between md:p-8  md:flex-row rounded-lg">
                     <div className='md:w-1/4'>
                         <div className="font-bold mb-4 text-black dark:text-black text-xl md:text-3xl">
@@ -90,9 +113,14 @@ const SingleProduct = ({repo}: InferGetServerSidePropsType<typeof getServerSideP
                 <div className="bg-white md:w-1/4 w-full p-4 md:p-8 rounded-lg shadow-xl">
                     <div className="text-md font-extrabold mb-4">Choose Size</div>
                     <div className="flex items-center justify-center gap-x-8">
-                        <div className="rounded-full py-2 px-4 text-sm flex items-center justify-center bg-yellow-500 cursor-pointer">R</div>
-                        <div className="rounded-full py-2 px-4 text-sm flex items-center justify-center bg-yellow-500">L</div>
-                        <div className="rounded-full py-2 px-4 text-sm flex items-center justify-center bg-yellow-500">XL</div>
+                        {
+                            sizes.map((item, index)=>(
+                                <div onClick={()=>{
+                                    //@ts-ignore
+                                    setSize(item)
+                                }} key={index} className={`rounded-full py-2 px-4 text-sm flex items-center justify-center ${item === size ? "bg-amber-800 text-white dark:text-white" : "bg-yellow-500"} cursor-pointer`}>{item}</div>
+                            ))
+                        }
                     </div>
                 </div>
                 <div className="bg-white md:w-2/4 w-full p-4 md:p-8 rounded-lg shadow-xl">
@@ -100,7 +128,13 @@ const SingleProduct = ({repo}: InferGetServerSidePropsType<typeof getServerSideP
                         <Image src={repo.photo} alt={repo.name} height={20} width={20} className='h-20 w-20 rounded-full object-cover'/>
                         <div className="flex items-center gap-x-8">
                             <div className="text-xl font-bold">Checkout</div>
-                            <FaArrowCircleRight className='h-12 w-12 text-yellow-500'/>
+                            <FaArrowCircleRight onClick={()=>{
+                                if(!token){
+                                    return toast.error("Please login first")
+                                }
+                                dispatch(addToCart({...repo, count : count.value, size, total : count.value * repo.priceSale}))
+                                router.push("/cart")
+                            }} className='h-12 w-12 text-yellow-500 cursor-pointer'/>
                         </div>
                     </div>
                 </div>

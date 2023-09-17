@@ -1,7 +1,7 @@
 import React from 'react'
 
 type Props = {
-    title : String,
+    title : String | React.ReactNode,
     onClick? : ()=> void;
     styles? : String
 }

@@ -61,7 +61,9 @@ const Navbar = ({ bgcolor = "" }: NavbarProps) => {
     }
 
     useEffect(() => {
-        getUser()
+        if(id){
+            getUser()
+        }
     }, [])
 
     return (
@@ -70,12 +72,13 @@ const Navbar = ({ bgcolor = "" }: NavbarProps) => {
                 <>
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between h-16">
-                            <div className="flex items-center">
+                            <div onClick={()=>router.replace("/")} className="flex cursor-pointer items-center gap-x-2">
                                 <div className="flex-shrink-0">
                                     <h1 className="text-black dark:text-black font-semibold text-lg">
                                         <Image src={logo} alt='logo' height={40} width={40} />
                                     </h1>
                                 </div>
+                                <div className="text-xl font-bold">Coffeeland</div>
                             </div>
                             <div className="hidden md:block">
                                 <div className="ml-4 flex items-center space-x-4">
@@ -151,8 +154,8 @@ const Navbar = ({ bgcolor = "" }: NavbarProps) => {
                                                 </Transition>
                                             </Menu>
                                         </div> :
-                                        <div className='md:flex hidden items-center justify-center gap-x-4'>
-                                            <CustomButton onClick={() => router.push("/login")} title={"Login"} styles={"bg-yellow-500 hover:scale-105 duration-200"} />
+                                        <div className='md:flex hidden items-center justify-center gap-x-4 text-white dark:text-white'>
+                                            <CustomButton onClick={() => router.push("/login")} title={"Login"} styles={"bg-yellow-500 hover:scale-105 duration-200 text-white dark:text-white"} />
                                             <CustomButton onClick={() => router.push("/signup")} title={"Signup"} styles={"hover:scale-105 duration-200"} />
                                         </div>
                                 }
@@ -237,7 +240,7 @@ const Navbar = ({ bgcolor = "" }: NavbarProps) => {
                                         </Transition>
                                     </Menu>
                                 </div> :
-                                <div className='items-center justify-between gap-y-4 flex-col gap-x-4 w-full'>
+                                <div className='items-center justify-between gap-y-4 flex-col gap-x-4 w-full text-white dark:text-white'>
                                     <CustomButton onClick={() => router.push("/login")} title={"Login"} styles={"bg-yellow-500 hover:scale-105 duration-200"} />
                                     <CustomButton onClick={() => router.push("/signup")} title={"Signup"} styles={"hover:scale-105 duration-200 mt-4"} />
                                 </div>

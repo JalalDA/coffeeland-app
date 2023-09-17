@@ -10,6 +10,12 @@ const User = new mongoose.Schema({
         type : String,
         require : true
     },
+    firstName : {
+        type : String,
+    },
+    lastName : {
+        type : String,
+    },
     pin : {
         type : String,
         default : 0
@@ -48,6 +54,9 @@ const User = new mongoose.Schema({
         type : String,
         default : ""
     },
+    birthDay : {
+        type : Date,
+    },
     membership : {
         type : String,
         default : ""
@@ -55,6 +64,10 @@ const User = new mongoose.Schema({
     cardId : {
         type : String,
         default : ""
+    },
+    gender : {
+        type : String,
+        default : "Male"
     },
     deletedAt : {
         type : Date,

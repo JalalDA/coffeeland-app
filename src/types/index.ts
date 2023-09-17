@@ -14,6 +14,8 @@ export interface Product {
     _id?: string;
     priceSale? : number;
     count? : number;
+    size? : string;
+    total? : number
   }
 
 
@@ -33,6 +35,21 @@ export interface UserData {
   status?: string;
   updatedAt?: string;
   username?: string;
+  gender? : string;
   __v?: number;
   _id?: string;
+}
+
+export interface Transaction {
+  _id: string;
+  amount: number;
+  createdAt: string;
+  deletedAt: string | null;
+  merchantId: string;
+  order_id: string;
+  productId: Product[]; // Ini adalah array dari tipe Product
+  status: string;
+  transaction_type: string;
+  updatedAt: string;
+  user_id: string;
 }

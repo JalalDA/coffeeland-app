@@ -52,13 +52,15 @@ export default async function handler(
         case "GET":
             try {
                 const { id, merchantId } = req.query
+                console.log({merchantId});
+                
                 if (!id) {
                     const products = await Products.find({merchantId})
-                    console.log({ products });
+                    
                     return res.status(200).json({ products })
                 }
                 const product = await Products.findOne({ _id: id})
-                console.log({ product });
+                
                 res.status(200).json({ product })
             } catch (error) {
                 console.log({ error });
