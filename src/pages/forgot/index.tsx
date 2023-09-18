@@ -8,7 +8,7 @@ type Props = {}
 
 const Forgot = (props: Props) => {
     return (
-        <div>
+        <div className='text-black'>
             <Head>
                 <title>Forgot Password</title>
             </Head>

@@ -69,7 +69,7 @@ const Login = (props: Props) => {
         }
     })
     return (
-        <div key={"asdasd"}>
+        <div className='text-black dark:text-black' key={"asdasd"}>
             <Head><title>Login</title></Head>
             <ToastContainer autoClose={1000} />
             <div className="relative flex items-center w-full bg-white justify-between">

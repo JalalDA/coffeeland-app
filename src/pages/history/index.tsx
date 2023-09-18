@@ -13,7 +13,7 @@ type Props = {}
 const History = ({ repo }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   console.log({ repo });
   return (
-    <div className='bg-white'>
+    <div className='bg-white text-black'>
       <Head><title>History</title></Head>
       <Navbar />
       <ImageHistory imageUrl={"/images/cart.png"}>

@@ -54,7 +54,7 @@ const Cart = (props: Props) => {
     setIsLoadingPay(false)
 }
   return (
-    <div className='bg-white'>
+    <div className='bg-white text-black'>
       <Head><title>Cart</title></Head>
       <Navbar />
       <div style={{

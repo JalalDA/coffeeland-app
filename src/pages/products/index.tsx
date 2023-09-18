@@ -31,7 +31,7 @@ const Products = ({repo}: InferGetServerSidePropsType<typeof getServerSideProps>
     },
   ]
   return (
-    <div className='bg-white'>
+    <div className='bg-white text-black '>
       <Head><title>Product</title></Head>
       <Navbar />
       <div className="flex flex-col-reverse md:flex-row items-start w-full border-t border-gray-100">

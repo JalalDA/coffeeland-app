@@ -35,7 +35,7 @@ const SingleProduct = ({repo}: InferGetServerSidePropsType<typeof getServerSideP
         "XL"
     ]
     return (
-        <div className='bg-white'>
+        <div className='text-black bg-white'>
             <Head>
                 <title>Product</title>
             </Head>

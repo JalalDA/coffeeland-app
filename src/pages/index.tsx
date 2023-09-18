@@ -22,7 +22,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
-    <div className={`bg-white ${inter.className}`}>
+    <div className={`bg-white text-black dark:text-black ${inter.className}`}>
 
       <Head><title>Coffeeland</title></Head>
       <Navbar/>

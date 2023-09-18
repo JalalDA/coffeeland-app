@@ -87,7 +87,7 @@ const Profile = (props: Props) => {
         setLoadingProfile(false)
     }
     return (
-        <div className='bg-white'>
+        <div className='bg-white text-black'>
             <Head><title>Profile</title></Head>
             <Navbar />
             <ToastContainer autoClose={1000} />
